@@ -1,0 +1,20 @@
+parameters:
+
+services:
+    App\Service\FirstAdditionalService:
+        public: true
+
+    service_first:
+        alias: App\Service\FirstAdditionalService
+        public: true
+
+    App\Service\SecondAdditionalService:
+        public: true
+
+    service_second:
+        alias: App\Service\SecondAdditionalService
+        public: true
+
+    App\Service\BaseService:
+        public: true
+        autowire: true
