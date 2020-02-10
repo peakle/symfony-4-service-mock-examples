@@ -76,13 +76,13 @@ class BaseServiceTest extends WebTestCase
     }
 
     /**
-     * @param $baseClass
+     * @param $baseObject
      * @param $newValue
      * @param string|null $propertyName
      * @param Closure|null $injectionClosure
      */
     public function changePrivateProperty(
-        $baseClass,
+        $baseObject,
         $newValue,
         string $propertyName = null,
         Closure $injectionClosure = null
@@ -92,12 +92,17 @@ class BaseServiceTest extends WebTestCase
         }
 
         if ($propertyName && $injectionClosure === null) {
-            $injectionClosure = function ($class, $value) use ($propertyName) {
-                $class->$propertyName = $value;
+            $injectionClosure = static function ($object, $value) use ($propertyName) {
+                if (isset($object->$propertyName)) {
+                    $object->$propertyName = $value;
+                } else {
+                    $error = sprintf('property %s doesn\'t exist in %s', $propertyName, get_class($object));
+                    throw new RuntimeException($error);
+                }
             };
         }
 
-        $injectionClosure = $injectionClosure->bindTo(null, $baseClass);
-        $injectionClosure($baseClass, $newValue);
+        $injectionClosure = $injectionClosure->bindTo(null, $baseObject);
+        $injectionClosure($baseObject, $newValue);
     }
 }
