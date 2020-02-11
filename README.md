@@ -1,4 +1,4 @@
-In this repo I give general examples of how you can mock service methods in symphony 4.
+In this repo I give general examples of how you can inject in container mock services on symphony 4.
 
 For examples of that look at test/Util dir.
 
